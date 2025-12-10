@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: twitter-clone-backend
+    env: python
+    plan: free
+    repo: <seu-repo-git>
+    branch: main
+    buildCommand: "pip install -r requirements.txt && python backend/manage.py migrate --noinput && python backend/manage.py collectstatic --noinput"
+    startCommand: "gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DEBUG
+        value: "false"
+
+staticSites:
+  - name: twitter-clone-frontend
+    repo: <seu-repo-git>
+    branch: main
+    buildCommand: "cd frontend && npm install && npm run build"
+    publishPath: frontend/dist
