@@ -1,0 +1,65 @@
+# -------------------------------
+# ⬛ GERAL — ignore comuns
+# -------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.swp
+*.DS_Store
+.env
+.env.*
+!.env.example
+*.bak
+
+# -------------------------------
+# ⬛ VENV
+# -------------------------------
+venv/
+env/
+ENV/
+.venv/
+.env/
+pythonenv/
+
+# -------------------------------
+# ⬛ DJANGO
+# -------------------------------
+media/
+staticfiles/
+static/
+*.mo
+
+# Arquivos de migração que não devem ser versionados (opcional)
+# Remova esse bloco se quiser commit de todas migrations.
+# */migrations/* 
+# !*/migrations/__init__.py
+
+# -------------------------------
+# ⬛ VSCode
+# -------------------------------
+.vscode/
+.settings/
+
+# -------------------------------
+# ⬛ FRONTEND — Vite / Node
+# -------------------------------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Arquivos de ambiente do Vite
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# -------------------------------
+# ⬛ RENDER / BUILD
+# -------------------------------
+.build/
+.cache/
+*.pid
