@@ -2,7 +2,7 @@
 
 Repositório com backend Django REST e frontend React (Vite).
 
-Veja instruções completas no canvas (ChatGPT). Principais comandos:
+Principais comandos:
 
 Backend (SQLite rápido):
 ```bash
