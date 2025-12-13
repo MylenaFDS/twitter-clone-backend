@@ -11,7 +11,7 @@ __pycache__/
 *.pyc
 *.swp
 *.DS_Store
-.env
+
 .env.*
 !.env.example
 *.bak
