@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.http import HttpResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,4 +19,7 @@ urlpatterns = [
     path('api/follows/', include('follows.urls')),
     path('api/likes/', include('likes.urls')),
     path('api/comments/', include('comments.urls')),
+
+    # Página simples
+    path('', lambda request: HttpResponse("Hello,world!")),
 ]
