@@ -30,7 +30,7 @@ pythonenv/
 # ⬛ DJANGO
 # -------------------------------
 media/
-staticfiles/
+
 static/
 *.mo
 

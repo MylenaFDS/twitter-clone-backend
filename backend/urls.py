@@ -4,9 +4,11 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+import debug_toolbar
 from django.http import HttpResponse
 
 urlpatterns = [
+    path("__debug__/", include(debug_toolbar.urls)),
     path('admin/', admin.site.urls),
 
     # JWT
