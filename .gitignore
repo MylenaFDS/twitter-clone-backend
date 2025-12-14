@@ -63,3 +63,4 @@ frontend/.env.*
 .build/
 .cache/
 *.pid
+.env
