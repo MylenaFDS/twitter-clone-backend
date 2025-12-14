@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-
+from django.http import HttpResponse
 from users.views import UserViewSet
 from posts.views import PostViewSet
 from follows.views import FollowViewSet
@@ -28,4 +28,7 @@ urlpatterns = [
 
     # 🌐 API Root (Browsable API)
     path("api/", include(router.urls)),
+
+    # Página simples
+    path('', lambda request: HttpResponse("Hello,world!")),
 ]
