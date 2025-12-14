@@ -1,7 +1,13 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import get_user_model
+from .serializers import UserSerializer
 
-# Create your views here.
-from django.http import JsonResponse
+User = get_user_model()
 
-def user_list(request):
-    return JsonResponse({"message": "Users endpoint funcionando"})
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+

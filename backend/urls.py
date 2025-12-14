@@ -1,27 +1,31 @@
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-import debug_toolbar
-from django.http import HttpResponse
+
+from users.views import UserViewSet
+from posts.views import PostViewSet
+from follows.views import FollowViewSet
+from likes.views import LikeViewSet
+from comments.views import CommentViewSet
+
+router = DefaultRouter()
+router.register(r"users", UserViewSet, basename="users")
+router.register(r"posts", PostViewSet, basename="posts")
+router.register(r"follows", FollowViewSet, basename="follows")
+router.register(r"likes", LikeViewSet, basename="likes")
+router.register(r"comments", CommentViewSet, basename="comments")
 
 urlpatterns = [
-    path("__debug__/", include(debug_toolbar.urls)),
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 
-    # JWT
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # 🔐 JWT
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-    # Apps
-    path('api/users/', include('users.urls')),
-    path('api/posts/', include('posts.urls')),
-    path('api/follows/', include('follows.urls')),
-    path('api/likes/', include('likes.urls')),
-    path('api/comments/', include('comments.urls')),
-
-    # Página simples
-    path('', lambda request: HttpResponse("Hello,world!")),
+    # 🌐 API Root (Browsable API)
+    path("api/", include(router.urls)),
 ]
