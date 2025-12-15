@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
@@ -23,6 +24,7 @@ class PostViewSet(ModelViewSet):
 class FeedView(ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
         user = self.request.user
@@ -36,7 +38,6 @@ class FeedView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
 # 🔹 Like / Unlike
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
