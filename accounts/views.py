@@ -1,7 +1,38 @@
-from rest_framework.generics import CreateAPIView
-from .models import User
-from .serializers import RegisterSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import get_user_model
 
-class RegisterView(CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = RegisterSerializer
+User = get_user_model()
+
+class RegisterView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        username = request.data.get("username")
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response(
+                {"error": "Username e senha são obrigatórios"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if User.objects.filter(username=username).exists():
+            return Response(
+                {"error": "Usuário já existe"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user = User(
+            username=username,
+            email=email
+        )
+        user.set_password(password)  # 🔥 ESSENCIAL
+        user.save()
+
+        return Response(
+            {"message": "Usuário criado com sucesso"},
+            status=status.HTTP_201_CREATED
+        )
