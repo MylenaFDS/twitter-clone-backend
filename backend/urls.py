@@ -12,6 +12,7 @@ from posts.views import PostViewSet, FeedView
 from follows.views import FollowViewSet
 from likes.views import LikeViewSet
 from comments.views import CommentViewSet
+from accounts.views import RegisterView  # 🔥 IMPORTANTE
 
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="users")
@@ -26,6 +27,9 @@ urlpatterns = [
     # 🔐 JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
+    # 🧾 Registro de usuário (CORREÇÃO-CHAVE)
+    path("api/register/", RegisterView.as_view(), name="register"),
 
     # 📰 Feed personalizado
     path("api/feed/", FeedView.as_view(), name="feed"),
