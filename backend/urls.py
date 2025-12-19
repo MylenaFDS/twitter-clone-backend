@@ -12,7 +12,8 @@ from posts.views import PostViewSet, FeedView
 from follows.views import FollowViewSet
 from likes.views import LikeViewSet
 from comments.views import CommentViewSet
-from accounts.views import RegisterView  # 🔥 IMPORTANTE
+from accounts.views import RegisterView, UserMeView
+
 
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="users")
@@ -30,6 +31,7 @@ urlpatterns = [
 
     # 🧾 Registro de usuário (CORREÇÃO-CHAVE)
     path("api/register/", RegisterView.as_view(), name="register"),
+    path("api/me/", UserMeView.as_view(), name="user-me"),
 
     # 📰 Feed personalizado
     path("api/feed/", FeedView.as_view(), name="feed"),

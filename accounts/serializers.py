@@ -16,4 +16,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])  # 🔐 ESSENCIAL
         user.save()
         return user
+class UserMeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email"]
 

@@ -12,6 +12,7 @@ class UserMiniSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author = UserMiniSerializer(read_only=True)
     likes_count = serializers.SerializerMethodField()
+    liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -21,7 +22,14 @@ class PostSerializer(serializers.ModelSerializer):
             "content",
             "created_at",
             "likes_count",
+            "liked",
         ]
 
     def get_likes_count(self, obj):
         return obj.like_set.count()
+
+    def get_liked(self, obj):
+        request = self.context.get("request")
+        if request and request.user.is_authenticated:
+            return obj.like_set.filter(user=request.user).exists()
+        return False

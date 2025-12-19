@@ -13,12 +13,23 @@ from likes.models import Like
 
 # 🔹 CRUD padrão (router)
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        author = self.request.query_params.get("author")
+
+        if author == "me":
+            return Post.objects.filter(author=user).order_by("-created_at")
+
+        return Post.objects.all().order_by("-created_at")
+    
+    def get_queryset(self):
+        return Post.objects.all().order_by("-created_at")
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
 
 # 🔹 Feed personalizado
 class FeedView(ListCreateAPIView):
