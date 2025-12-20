@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
-
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserMeSerializer
 User = get_user_model()
 
 class RegisterView(APIView):
@@ -37,8 +38,7 @@ class RegisterView(APIView):
             {"message": "Usuário criado com sucesso"},
             status=status.HTTP_201_CREATED
         )
-    from rest_framework.permissions import IsAuthenticated
-from .serializers import UserMeSerializer
+    
 
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
