@@ -24,9 +24,7 @@ class PostViewSet(ModelViewSet):
             return Post.objects.filter(author=user).order_by("-created_at")
 
         return Post.objects.all().order_by("-created_at")
-    
-    def get_queryset(self):
-        return Post.objects.all().order_by("-created_at")
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
