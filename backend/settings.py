@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "users",
     "follows",
-    "likes",
     "comments",
     "posts",
 ]

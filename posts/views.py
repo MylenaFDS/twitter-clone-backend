@@ -6,12 +6,12 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
-from .models import Post
+from .models import Post, Like
 from .serializers import PostSerializer
 from follows.models import Follow
-from likes.models import Like
 
-# 🔹 CRUD padrão (router)
+
+# 🔹 CRUD padrão
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
@@ -27,6 +27,11 @@ class PostViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 
 
 # 🔹 Feed personalizado
@@ -47,12 +52,15 @@ class FeedView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
 # 🔹 Like / Unlike
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
+
         like, created = Like.objects.get_or_create(
             user=request.user,
             post=post
@@ -62,3 +70,4 @@ class LikeToggleView(APIView):
             like.delete()
 
         return Response({"liked": created})
+

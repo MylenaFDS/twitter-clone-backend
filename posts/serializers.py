@@ -26,10 +26,10 @@ class PostSerializer(serializers.ModelSerializer):
         ]
 
     def get_likes_count(self, obj):
-        return obj.like_set.count()
+        return obj.likes.count()
 
     def get_liked(self, obj):
         request = self.context.get("request")
         if request and request.user.is_authenticated:
-            return obj.like_set.filter(user=request.user).exists()
+            return obj.likes.filter(user=request.user).exists()
         return False

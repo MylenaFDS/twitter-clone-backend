@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from users.views import UserViewSet
 from posts.views import PostViewSet, FeedView
 from follows.views import FollowViewSet
-from likes.views import LikeViewSet
+
 from comments.views import CommentViewSet
 from accounts.views import RegisterView, UserMeView
 
@@ -19,7 +19,7 @@ router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="users")
 router.register(r"posts", PostViewSet, basename="posts")
 router.register(r"follows", FollowViewSet, basename="follows")
-router.register(r"likes", LikeViewSet, basename="likes")
+
 router.register(r"comments", CommentViewSet, basename="comments")
 
 urlpatterns = [
