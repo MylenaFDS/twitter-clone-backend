@@ -15,6 +15,7 @@ from follows.models import Follow
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
         user = self.request.user
@@ -23,13 +24,15 @@ class PostViewSet(ModelViewSet):
 
         queryset = Post.objects.all()
 
-        # Tweets do próprio usuário
+        # 🧾 Tweets do próprio usuário
         if author == "me":
             queryset = queryset.filter(author=user)
 
-        # Tweets curtidos pelo usuário
+        # ❤️ Tweets curtidos pelo usuário
         if liked == "me":
-            queryset = queryset.filter(likes__user=user)
+            queryset = queryset.filter(
+                likes__user=user
+            ).distinct()  # 🔥 ESSENCIAL
 
         return queryset.order_by("-created_at")
 
@@ -65,6 +68,7 @@ class FeedView(ListCreateAPIView):
 # 🔹 Like / Unlike
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def post(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
@@ -78,3 +82,4 @@ class LikeToggleView(APIView):
             like.delete()
 
         return Response({"liked": created})
+
