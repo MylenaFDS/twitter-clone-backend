@@ -19,11 +19,19 @@ class PostViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         author = self.request.query_params.get("author")
+        liked = self.request.query_params.get("liked")
 
+        queryset = Post.objects.all()
+
+        # Tweets do próprio usuário
         if author == "me":
-            return Post.objects.filter(author=user).order_by("-created_at")
+            queryset = queryset.filter(author=user)
 
-        return Post.objects.all().order_by("-created_at")
+        # Tweets curtidos pelo usuário
+        if liked == "me":
+            queryset = queryset.filter(likes__user=user)
+
+        return queryset.order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -70,4 +78,3 @@ class LikeToggleView(APIView):
             like.delete()
 
         return Response({"liked": created})
-
