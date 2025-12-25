@@ -3,7 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import (
+    MultiPartParser,
+    FormParser,
+    JSONParser,
+)
 
 from .serializers import UserMeSerializer
 
@@ -21,30 +25,34 @@ class RegisterView(APIView):
         if not username or not password:
             return Response(
                 {"error": "Username e senha são obrigatórios"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         if User.objects.filter(username=username).exists():
             return Response(
                 {"error": "Usuário já existe"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         user = User(username=username, email=email)
-        user.set_password(password)  # 🔥 ESSENCIAL
+        user.set_password(password)  # 🔐 ESSENCIAL
         user.save()
 
         return Response(
             {"message": "Usuário criado com sucesso"},
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_201_CREATED,
         )
 
 
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
 
-    # 🔥 SUPORTE A JSON + FORM DATA (UPLOAD)
-    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    # 🔥 ESSENCIAL para aceitar arquivos + JSON
+    parser_classes = [
+        MultiPartParser,
+        FormParser,
+        JSONParser,
+    ]
 
     def get(self, request):
         serializer = UserMeSerializer(request.user)
@@ -52,14 +60,10 @@ class UserMeView(APIView):
 
     def patch(self, request):
         serializer = UserMeSerializer(
-    request.user,
-    data=request.data,
-    partial=True,
-    context={"request": request}
-)
-
+            request.user,
+            data=request.data,
+            partial=True,
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response(serializer.data)
-

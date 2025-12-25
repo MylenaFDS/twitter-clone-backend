@@ -19,8 +19,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserMeSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()
-    banner = serializers.SerializerMethodField()
+    avatar = serializers.ImageField(required=False, allow_null=True)
+    banner = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = User
@@ -33,15 +33,3 @@ class UserMeSerializer(serializers.ModelSerializer):
             "banner",
         ]
         read_only_fields = ["id", "username", "email"]
-
-    def get_avatar(self, obj):
-        request = self.context.get("request")
-        if obj.avatar and request:
-            return request.build_absolute_uri(obj.avatar.url)
-        return None
-
-    def get_banner(self, obj):
-        request = self.context.get("request")
-        if obj.banner and request:
-            return request.build_absolute_uri(obj.banner.url)
-        return None
