@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.http import HttpResponse
+from django.conf import settings
+from django.conf.urls.static import static
 
 from users.views import UserViewSet
 from posts.views import PostViewSet, FeedView, LikeToggleView
@@ -34,7 +36,7 @@ urlpatterns = [
     # 📰 Feed personalizado
     path("api/feed/", FeedView.as_view(), name="feed"),
 
-    # ❤️ Like / Unlike  ✅ AQUI
+    # ❤️ Like / Unlike
     path(
         "api/posts/<int:post_id>/like/",
         LikeToggleView.as_view(),
@@ -47,3 +49,9 @@ urlpatterns = [
     path("", lambda request: HttpResponse("Hello, world!")),
 ]
 
+# 🖼️ MEDIA FILES (avatar / banner)
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

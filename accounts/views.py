@@ -3,9 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+
 from .serializers import UserMeSerializer
+
 User = get_user_model()
+
 
 class RegisterView(APIView):
     permission_classes = []
@@ -27,10 +30,7 @@ class RegisterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user = User(
-            username=username,
-            email=email
-        )
+        user = User(username=username, email=email)
         user.set_password(password)  # 🔥 ESSENCIAL
         user.save()
 
@@ -38,10 +38,13 @@ class RegisterView(APIView):
             {"message": "Usuário criado com sucesso"},
             status=status.HTTP_201_CREATED
         )
-    
+
 
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
+
+    # 🔥 SUPORTE A JSON + FORM DATA (UPLOAD)
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
         serializer = UserMeSerializer(request.user)
@@ -49,11 +52,14 @@ class UserMeView(APIView):
 
     def patch(self, request):
         serializer = UserMeSerializer(
-            request.user,
-            data=request.data,
-            partial=True
-        )
+    request.user,
+    data=request.data,
+    partial=True,
+    context={"request": request}
+)
+
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
         return Response(serializer.data)
 
