@@ -13,7 +13,7 @@ from users.views import UserViewSet
 from posts.views import PostViewSet, FeedView, LikeToggleView
 from follows.views import FollowViewSet
 from comments.views import CommentViewSet
-from accounts.views import RegisterView, UserMeView
+from accounts.views import RegisterView, UserMeView, ChangePasswordView
 
 
 router = DefaultRouter()
@@ -42,6 +42,12 @@ urlpatterns = [
         LikeToggleView.as_view(),
         name="post-like-toggle",
     ),
+
+    path(
+    "api/change-password/",
+    ChangePasswordView.as_view(),
+    name="change-password",
+),
 
     # 🌐 API padrão (CRUD)
     path("api/", include(router.urls)),

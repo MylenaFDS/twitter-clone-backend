@@ -32,4 +32,4 @@ class UserMeSerializer(serializers.ModelSerializer):
             "avatar",
             "banner",
         ]
-        read_only_fields = ["id", "username", "email"]
+        read_only_fields = ["id", "email"]
