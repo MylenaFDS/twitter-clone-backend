@@ -46,6 +46,7 @@ class PostViewSet(ModelViewSet):
 
 
 # 🔹 Feed personalizado
+# 🔹 Feed personalizado
 class FeedView(ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
@@ -53,17 +54,17 @@ class FeedView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        following = Follow.objects.filter(
+
+        following_ids = Follow.objects.filter(
             follower=user
         ).values_list("following_id", flat=True)
 
         return Post.objects.filter(
-            author__id__in=following
+            author__in=[*following_ids, user.id]
         ).order_by("-created_at")
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
 
 # 🔹 Like / Unlike
 class LikeToggleView(APIView):

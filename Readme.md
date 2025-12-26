@@ -1,13 +1,9 @@
-# Twitter Clone Fullstack (Monorepo Django + React)
-
-> Repositório monolítico com backend em Django REST Framework e frontend em React (Vite). Pensado para deploy no Render.com — backend como Web Service (gunicorn) e frontend como Static Site (Vite build).
-
----
+# Twitter Clone Backend
 
 ## Estrutura do projeto
 
 ```
-/twitter_clone/
+/twitter_clone_backend/
 ├─ backend/
 │  ├─ manage.py
 │  ├─ backend/

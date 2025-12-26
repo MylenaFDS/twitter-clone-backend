@@ -11,15 +11,13 @@ from django.conf.urls.static import static
 
 from users.views import UserViewSet
 from posts.views import PostViewSet, FeedView, LikeToggleView
-from follows.views import FollowViewSet
 from comments.views import CommentViewSet
 from accounts.views import RegisterView, UserMeView, ChangePasswordView
 
-
+# 🔹 Router padrão (CRUD)
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="users")
 router.register(r"posts", PostViewSet, basename="posts")
-router.register(r"follows", FollowViewSet, basename="follows")
 router.register(r"comments", CommentViewSet, basename="comments")
 
 urlpatterns = [
@@ -32,9 +30,18 @@ urlpatterns = [
     # 🧾 Registro / usuário logado
     path("api/register/", RegisterView.as_view(), name="register"),
     path("api/me/", UserMeView.as_view(), name="user-me"),
+    path(
+        "api/change-password/",
+        ChangePasswordView.as_view(),
+        name="change-password",
+    ),
 
-    # 📰 Feed personalizado
-    path("api/feed/", FeedView.as_view(), name="feed"),
+    # 📰 Feed (somente posts de pessoas seguidas)
+    path(
+        "api/posts/feed/",
+        FeedView.as_view(),
+        name="feed",
+    ),
 
     # ❤️ Like / Unlike
     path(
@@ -43,11 +50,8 @@ urlpatterns = [
         name="post-like-toggle",
     ),
 
-    path(
-    "api/change-password/",
-    ChangePasswordView.as_view(),
-    name="change-password",
-),
+    # 👥 Seguir / deixar de seguir
+    path("api/follows/", include("follows.urls")),
 
     # 🌐 API padrão (CRUD)
     path("api/", include(router.urls)),
@@ -55,7 +59,7 @@ urlpatterns = [
     path("", lambda request: HttpResponse("Hello, world!")),
 ]
 
-# 🖼️ MEDIA FILES (avatar / banner)
+# 🖼️ MEDIA FILES (avatar / banner) — somente em desenvolvimento
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,

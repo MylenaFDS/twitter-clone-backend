@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import follow_list
+from .views import FollowToggleView
 
 urlpatterns = [
-    path("", follow_list),
+    path("toggle/<int:user_id>/", FollowToggleView.as_view()),
 ]
