@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth import get_user_model
 from .models import Follow
+from .serializers import FollowUserSerializer
 
 User = get_user_model()
+
 
 class FollowToggleView(APIView):
     permission_classes = [IsAuthenticated]
@@ -14,7 +15,7 @@ class FollowToggleView(APIView):
         if request.user.id == user_id:
             return Response(
                 {"error": "Você não pode seguir a si mesmo"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=400
             )
 
         try:
@@ -22,7 +23,7 @@ class FollowToggleView(APIView):
         except User.DoesNotExist:
             return Response(
                 {"error": "Usuário não encontrado"},
-                status=status.HTTP_404_NOT_FOUND
+                status=404
             )
 
         follow, created = Follow.objects.get_or_create(
@@ -35,5 +36,32 @@ class FollowToggleView(APIView):
             return Response({"following": False})
 
         return Response({"following": True})
+
+
+class FollowersListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        followers = Follow.objects.filter(
+            following_id=user_id
+        ).select_related("follower")
+
+        users = [follow.follower for follow in followers]
+        serializer = FollowUserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+class FollowingListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        following = Follow.objects.filter(
+            follower_id=user_id
+        ).select_related("following")
+
+        users = [follow.following for follow in following]
+        serializer = FollowUserSerializer(users, many=True)
+        return Response(serializer.data)
+
 
 

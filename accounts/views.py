@@ -57,8 +57,14 @@ class UserMeView(APIView):
     ]
 
     def get(self, request):
-        serializer = UserMeSerializer(request.user)
+        serializer = UserMeSerializer(
+        request.user,
+        data=request.data,
+        partial=True,
+        context={"request": request}
+    )
         return Response(serializer.data)
+
 
     def patch(self, request):
         serializer = UserMeSerializer(
