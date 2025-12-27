@@ -60,7 +60,12 @@ class UserMeSerializer(serializers.ModelSerializer):
 
     def get_is_following(self, obj):
         request = self.context.get("request")
+
         if not request or request.user.is_anonymous:
+            return False
+
+        # 👇 IMPORTANTE: não seguir a si mesmo
+        if request.user == obj:
             return False
 
         return Follow.objects.filter(

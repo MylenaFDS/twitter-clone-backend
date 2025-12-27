@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework.parsers import (
@@ -16,6 +17,9 @@ from .serializers import UserMeSerializer
 User = get_user_model()
 
 
+# =========================
+# REGISTRO
+# =========================
 class RegisterView(APIView):
     permission_classes = []
 
@@ -37,7 +41,7 @@ class RegisterView(APIView):
             )
 
         user = User(username=username, email=email)
-        user.set_password(password)  # 🔐 ESSENCIAL
+        user.set_password(password)
         user.save()
 
         return Response(
@@ -46,36 +50,51 @@ class RegisterView(APIView):
         )
 
 
+# =========================
+# MEU PERFIL (/api/me/)
+# =========================
 class UserMeView(APIView):
     permission_classes = [IsAuthenticated]
-
-    # 🔥 ESSENCIAL para aceitar arquivos + JSON
-    parser_classes = [
-        MultiPartParser,
-        FormParser,
-        JSONParser,
-    ]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
         serializer = UserMeSerializer(
-        request.user,
-        data=request.data,
-        partial=True,
-        context={"request": request}
-    )
-        return Response(serializer.data)
-
+            request.user,
+            context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request):
         serializer = UserMeSerializer(
             request.user,
             data=request.data,
             partial=True,
+            context={"request": request}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+# =========================
+# PERFIL DE OUTRO USUÁRIO (/api/users/<id>/)
+# =========================
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+
+        serializer = UserMeSerializer(
+            user,
+            context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# =========================
+# ALTERAR SENHA
+# =========================
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
