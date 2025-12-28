@@ -36,6 +36,9 @@ urlpatterns = [
         name="change-password",
     ),
 
+    # 👤 PERFIS (⚠️ ANTES DO ROUTER)
+    path("api/", include("accounts.urls")),
+
     # 📰 Feed (somente posts de pessoas seguidas)
     path(
         "api/posts/feed/",

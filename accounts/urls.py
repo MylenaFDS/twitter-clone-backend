@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import RegisterView, UserMeView, UserDetailView
+from .views import RegisterView, UserMeView, UserPublicProfileView
 
 urlpatterns = [
-    path("register/", RegisterView.as_view(), name="register"),
-    path("me/", UserMeView.as_view(), name="user-me"),
-    path("<int:id>/", UserDetailView.as_view()),
+    path("register/", RegisterView.as_view()),
+    path("me/", UserMeView.as_view()),
+    path("profiles/<int:pk>/", UserPublicProfileView.as_view()),  # 👈 ESSENCIAL
 ]
+
 

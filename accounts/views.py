@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.password_validation import validate_password
@@ -79,19 +80,19 @@ class UserMeView(APIView):
 # =========================
 # PERFIL DE OUTRO USUÁRIO (/api/users/<id>/)
 # =========================
-class UserDetailView(APIView):
+
+class UserPublicProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, id):
-        user = get_object_or_404(User, id=id)
+    def get(self, request, pk):
+        user = get_object_or_404(User, pk=pk)
 
         serializer = UserMeSerializer(
             user,
             context={"request": request}
         )
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+        return Response(serializer.data)
 # =========================
 # ALTERAR SENHA
 # =========================

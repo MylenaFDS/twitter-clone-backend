@@ -72,3 +72,4 @@ class UserMeSerializer(serializers.ModelSerializer):
             follower=request.user,
             following=obj
         ).exists()
+
