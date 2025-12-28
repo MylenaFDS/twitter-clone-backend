@@ -21,8 +21,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserMeSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(required=False, allow_null=True)
-    banner = serializers.ImageField(required=False, allow_null=True)
+    avatar = serializers.SerializerMethodField()
+    banner = serializers.SerializerMethodField()
     username = serializers.CharField(required=False)
 
     followers_count = serializers.SerializerMethodField()
@@ -64,7 +64,7 @@ class UserMeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
 
-        # 👇 IMPORTANTE: não seguir a si mesmo
+        # 🔒 não seguir a si mesmo
         if request.user == obj:
             return False
 
@@ -73,3 +73,14 @@ class UserMeSerializer(serializers.ModelSerializer):
             following=obj
         ).exists()
 
+    def get_avatar(self, obj):
+        request = self.context.get("request")
+        if obj.avatar and request:
+            return request.build_absolute_uri(obj.avatar.url)
+        return None
+
+    def get_banner(self, obj):
+        request = self.context.get("request")
+        if obj.banner and request:
+            return request.build_absolute_uri(obj.banner.url)
+        return None

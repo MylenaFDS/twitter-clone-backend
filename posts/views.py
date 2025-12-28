@@ -1,17 +1,20 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
 
 from .models import Post, Like
 from .serializers import PostSerializer
 from follows.models import Follow
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-# 🔹 CRUD padrão
+# 🔹 CRUD padrão (timeline própria / curtidos / etc)
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
@@ -28,11 +31,15 @@ class PostViewSet(ModelViewSet):
         if author == "me":
             queryset = queryset.filter(author=user)
 
+        # 🧾 Tweets de um usuário específico (author=id)
+        elif author and author.isdigit():
+            queryset = queryset.filter(author_id=author)
+
         # ❤️ Tweets curtidos pelo usuário
         if liked == "me":
             queryset = queryset.filter(
                 likes__user=user
-            ).distinct()  # 🔥 ESSENCIAL
+            ).distinct()
 
         return queryset.order_by("-created_at")
 
@@ -40,13 +47,10 @@ class PostViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
     def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context["request"] = self.request
-        return context
+        return {"request": self.request}
 
 
-# 🔹 Feed personalizado
-# 🔹 Feed personalizado
+# 🔹 Feed personalizado (seguindo + eu)
 class FeedView(ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
@@ -65,6 +69,27 @@ class FeedView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+
+# ✅ Posts de um usuário específico (perfil)
+class UserPostsView(ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        user_id = self.kwargs["user_id"]
+        user = get_object_or_404(User, id=user_id)
+
+        return Post.objects.filter(
+            author=user
+        ).order_by("-created_at")
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
 
 # 🔹 Like / Unlike
 class LikeToggleView(APIView):
