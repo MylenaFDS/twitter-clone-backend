@@ -14,6 +14,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+
 # 🔹 CRUD padrão (timeline própria / curtidos / etc)
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer

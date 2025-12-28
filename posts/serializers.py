@@ -4,14 +4,35 @@ from accounts.models import User
 from comments.models import Comment
 
 
-class UserMiniSerializer(serializers.ModelSerializer):
+# =========================
+# SERIALIZER DO AUTOR (COM AVATAR E BANNER)
+# =========================
+class PostAuthorSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    banner = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["id", "username", "avatar", "banner"]
+
+    def get_avatar(self, obj):
+        request = self.context.get("request")
+        if obj.avatar and request:
+            return request.build_absolute_uri(obj.avatar.url)
+        return None
+
+    def get_banner(self, obj):
+        request = self.context.get("request")
+        if obj.banner and request:
+            return request.build_absolute_uri(obj.banner.url)
+        return None
 
 
+# =========================
+# COMENTÁRIOS
+# =========================
 class CommentSerializer(serializers.ModelSerializer):
-    author = UserMiniSerializer(read_only=True)
+    author = PostAuthorSerializer(read_only=True)
 
     class Meta:
         model = Comment
@@ -23,8 +44,11 @@ class CommentSerializer(serializers.ModelSerializer):
         ]
 
 
+# =========================
+# POSTS
+# =========================
 class PostSerializer(serializers.ModelSerializer):
-    author = UserMiniSerializer(read_only=True)
+    author = PostAuthorSerializer(read_only=True)
     likes_count = serializers.SerializerMethodField()
     liked = serializers.SerializerMethodField()
     comments_count = serializers.SerializerMethodField()

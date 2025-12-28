@@ -64,7 +64,6 @@ class UserMeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
 
-        # 🔒 não seguir a si mesmo
         if request.user == obj:
             return False
 
