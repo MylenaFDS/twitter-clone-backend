@@ -83,3 +83,29 @@ class UserMeSerializer(serializers.ModelSerializer):
         if obj.banner and request:
             return request.build_absolute_uri(obj.banner.url)
         return None
+
+class UserListSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "avatar", "is_following"]
+
+    def get_avatar(self, obj):
+        request = self.context.get("request")
+        if obj.avatar and request:
+            return request.build_absolute_uri(obj.avatar.url)
+        return None
+
+    def get_is_following(self, obj):
+        request = self.context.get("request")
+        if not request or request.user.is_anonymous:
+            return False
+        if request.user == obj:
+            return False
+
+        return Follow.objects.filter(
+            follower=request.user,
+            following=obj
+        ).exists()

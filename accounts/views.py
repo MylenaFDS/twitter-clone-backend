@@ -14,7 +14,9 @@ from rest_framework.parsers import (
     JSONParser,
 )
 
-from .serializers import UserMeSerializer
+from follows.models import Follow
+
+from .serializers import UserMeSerializer,UserListSerializer
 
 User = get_user_model()
 
@@ -132,3 +134,48 @@ class ChangePasswordView(APIView):
             {"message": "Senha alterada com sucesso"},
             status=status.HTTP_200_OK,
         )
+
+# =========================
+# SEGUIDORES
+# /api/users/<id>/followers/
+# =========================
+class UserFollowersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+
+        followers = User.objects.filter(
+            following__following=user
+        ).distinct()
+
+        serializer = UserListSerializer(
+            followers,
+            many=True,
+            context={"request": request}
+        )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# =========================
+# SEGUINDO
+# /api/users/<id>/following/
+# =========================
+class UserFollowingView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+
+        following = User.objects.filter(
+            followers__follower=user
+        ).distinct()
+
+        serializer = UserListSerializer(
+            following,
+            many=True,
+            context={"request": request}
+        )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
