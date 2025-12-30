@@ -179,3 +179,37 @@ class UserFollowingView(APIView):
         )
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# =========================
+# DEIXAR DE SEGUIR
+# /api/users/<id>/unfollow/
+# =========================
+class UnfollowUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        user_to_unfollow = get_object_or_404(User, id=id)
+
+        if user_to_unfollow == request.user:
+            return Response(
+                {"detail": "Você não pode deixar de seguir a si mesmo"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        follow = Follow.objects.filter(
+            follower=request.user,
+            following=user_to_unfollow
+        )
+
+        if not follow.exists():
+            return Response(
+                {"detail": "Você não segue este usuário"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        follow.delete()
+
+        return Response(
+            {"detail": "Deixou de seguir com sucesso"},
+            status=status.HTTP_200_OK,
+        )

@@ -1,13 +1,21 @@
 from django.urls import path
-from .views import RegisterView, UserMeView, UserPublicProfileView, UserFollowersView,UserFollowingView
+from .views import (
+    RegisterView,
+    UserMeView,
+    UserPublicProfileView,
+    UserFollowersView,
+    UserFollowingView,
+    UnfollowUserView,   # 👈 IMPORTANTE
+)
 
 urlpatterns = [
     path("register/", RegisterView.as_view()),
     path("me/", UserMeView.as_view()),
-    path("profiles/<int:pk>/", UserPublicProfileView.as_view()),  # 👈 ESSENCIAL
-    path("users/<int:id>/followers/",UserFollowersView.as_view()),
-    path("users/<int:id>/following/",UserFollowingView.as_view()
-    ),
+    path("profiles/<int:pk>/", UserPublicProfileView.as_view()),
+
+    path("users/<int:id>/followers/", UserFollowersView.as_view()),
+    path("users/<int:id>/following/", UserFollowingView.as_view()),
+
+    # 🔴 NOVA ROTA
+    path("users/<int:id>/unfollow/", UnfollowUserView.as_view()),
 ]
-
-
