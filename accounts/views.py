@@ -213,3 +213,35 @@ class UnfollowUserView(APIView):
             {"detail": "Deixou de seguir com sucesso"},
             status=status.HTTP_200_OK,
         )
+
+# =========================
+# SUGESTÕES DE USUÁRIOS
+# /api/users/suggestions/
+# =========================
+class UserSuggestionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Usuários que eu JÁ sigo
+        following_ids = Follow.objects.filter(
+            follower=user
+        ).values_list("following_id", flat=True)
+
+        # Sugestões:
+        # - não sou eu
+        # - não sigo ainda
+        suggestions = User.objects.exclude(
+            id__in=following_ids
+        ).exclude(
+            id=user.id
+        )[:5]  # limite opcional
+
+        serializer = UserListSerializer(
+            suggestions,
+            many=True,
+            context={"request": request}
+        )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -5,7 +5,8 @@ from .views import (
     UserPublicProfileView,
     UserFollowersView,
     UserFollowingView,
-    UnfollowUserView,   # 👈 IMPORTANTE
+    UnfollowUserView,
+    UserSuggestionsView
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path("users/<int:id>/followers/", UserFollowersView.as_view()),
     path("users/<int:id>/following/", UserFollowingView.as_view()),
 
-    # 🔴 NOVA ROTA
+    # 🔴 NOVAS ROTAS
     path("users/<int:id>/unfollow/", UnfollowUserView.as_view()),
+    path("users/suggestions/", UserSuggestionsView.as_view()),
 ]
