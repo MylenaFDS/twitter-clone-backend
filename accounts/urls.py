@@ -6,7 +6,9 @@ from .views import (
     UserFollowersView,
     UserFollowingView,
     UnfollowUserView,
-    UserSuggestionsView
+    UserSuggestionsView,
+    PasswordResetRequestView,
+    PasswordResetConfirmView,
 )
 
 urlpatterns = [
@@ -20,4 +22,9 @@ urlpatterns = [
     # 🔴 NOVAS ROTAS
     path("users/<int:id>/unfollow/", UnfollowUserView.as_view()),
     path("users/suggestions/", UserSuggestionsView.as_view()),
+
+    
+    # 🔐 RESET DE SENHA
+    path("password-reset/request/", PasswordResetRequestView.as_view()),
+    path("password-reset/confirm/", PasswordResetConfirmView.as_view()),
 ]

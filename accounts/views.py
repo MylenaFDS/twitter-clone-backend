@@ -18,6 +18,8 @@ from follows.models import Follow
 
 from .serializers import UserMeSerializer,UserListSerializer
 
+from .models import PasswordResetToken
+
 User = get_user_model()
 
 
@@ -245,3 +247,92 @@ class UserSuggestionsView(APIView):
         )
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# =========================
+# =========================
+# REQUEST RESET
+# =========================
+class PasswordResetRequestView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+
+        if not username:
+            return Response(
+                {"error": "Username é obrigatório"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "Usuário não encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # cria ou atualiza token (não expõe)
+        PasswordResetToken.objects.update_or_create(
+            user=user
+        )
+
+        return Response(
+            {"message": "Reset autorizado"},
+            status=status.HTTP_200_OK
+        )
+
+
+# =========================
+# =========================
+# CONFIRM RESET
+# =========================
+class PasswordResetConfirmView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+        new_password = request.data.get("new_password")
+
+        if not username or not new_password:
+            return Response(
+                {"error": "Username e nova senha são obrigatórios"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(username=username)
+            reset_token = PasswordResetToken.objects.get(user=user)
+        except (User.DoesNotExist, PasswordResetToken.DoesNotExist):
+            return Response(
+                {"error": "Reset inválido ou não solicitado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not reset_token.is_valid():
+            reset_token.delete()
+            return Response(
+                {"error": "Token expirado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            validate_password(new_password, user)
+        except ValidationError as e:
+            return Response(
+                {"error": e.messages},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user.set_password(new_password)
+        user.save()
+
+        # token só pode ser usado uma vez
+        reset_token.delete()
+
+        return Response(
+            {"message": "Senha redefinida com sucesso"},
+            status=status.HTTP_200_OK
+        )
+
+    
