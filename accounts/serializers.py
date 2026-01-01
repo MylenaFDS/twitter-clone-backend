@@ -21,8 +21,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserMeSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()
-    banner = serializers.SerializerMethodField()
+    avatar = serializers.ImageField(required=False, allow_null=True)
+    banner = serializers.ImageField(required=False, allow_null=True)
+
+    avatar_url = serializers.SerializerMethodField()
+    banner_url = serializers.SerializerMethodField()
+
     username = serializers.CharField(required=False)
 
     followers_count = serializers.SerializerMethodField()
@@ -38,6 +42,8 @@ class UserMeSerializer(serializers.ModelSerializer):
             "bio",
             "avatar",
             "banner",
+            "avatar_url",
+            "banner_url",
             "followers_count",
             "following_count",
             "is_following",
@@ -72,13 +78,13 @@ class UserMeSerializer(serializers.ModelSerializer):
             following=obj
         ).exists()
 
-    def get_avatar(self, obj):
+    def get_avatar_url(self, obj):
         request = self.context.get("request")
         if obj.avatar and request:
             return request.build_absolute_uri(obj.avatar.url)
         return None
 
-    def get_banner(self, obj):
+    def get_banner_url(self, obj):
         request = self.context.get("request")
         if obj.banner and request:
             return request.build_absolute_uri(obj.banner.url)
