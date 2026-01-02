@@ -1,0 +1,369 @@
+[
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$B333WoE1gWkVQDEbOU9DMj$nrBE7pikbxQYI5oWehC8fwh3Jz9rP1PYil1a2m/qge4=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "HarleyQuinn",
+    "first_name": "",
+    "last_name": "",
+    "email": "adminuser@adminuser.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-22T06:40:34.518Z",
+    "avatar": "avatars/harley-quinn_Ll6HCme.jpg",
+    "banner": "banners/harley-quinn_4QB9EC6.jpg",
+    "bio": "💋🃏 Harley Quinn 🃏💋\r\nPsiquiatra arrependida? Talvez.\r\nRainha do caos, amante de confusão e especialista em decisões questionáveis.\r\n💔 Ex do palhaço mais tóxico de Gotham\r\n🔨 Amor próprio > relacionamentos abusivos\r\n✨ Doidinha, brilhante e perigosamente livre\r\n#PuddinQuem? #HarleyFazDoJeitoDela #CaosComGlitter 💥🖤",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$89MCtE3pBVL2bmZbgTBXUB$px9FOyxc0FvJ/vcCli2MnCzHQBkwC4dJfEwbG7NdF2g=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "🃏 Coringa 🃏",
+    "first_name": "",
+    "last_name": "",
+    "email": "mylenafds@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-22T08:11:16.916Z",
+    "avatar": "avatars/CoringaAvatar.jpg",
+    "banner": "banners/CoringaBanner_SLOk86e.jpg",
+    "bio": "Sorria — a piada sou eu… ou você.\r\nAgente do caos | Humor ácido | Moral flexível\r\nRindo enquanto Gotham queima 🔥\r\nPor que ser são num mundo tão louco?\r\n😂💣 #WhySoSerious #LetsPutASmileOnThatFace",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$DqljmVK1cYo6t9ndXPqj9Y$9cevKKi/DVFE+T7agynndx2wOau1TLPjGNaQR/HguNk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Batman",
+    "first_name": "",
+    "last_name": "",
+    "email": "simoneferreira1924@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T02:41:12.512Z",
+    "avatar": "avatars/batman-avatar.jpg",
+    "banner": "banners/Batman-banner.jpg",
+    "bio": "Silêncio é minha linguagem.\r\nVigilante de Gotham | Justiça acima de tudo\r\nSem superpoderes. Só disciplina, medo e estratégia.\r\nA noite me pertence.\r\n⚫ #EuSouOBatman #GothamNuncaDorme",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$TYnqM9NWTd2LA3ayGGkgCh$29bwdE7H5sh5setsWTCcfvcFvJ482coo3Te1jl+Edvs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "🦸‍♂️ Superman 🦸‍♂️",
+    "first_name": "",
+    "last_name": "",
+    "email": "mylenafds@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T02:42:28.326Z",
+    "avatar": "avatars/SuperAvatar.jpg",
+    "banner": "banners/SuperBanner.jpg",
+    "bio": "Verdade, justiça e esperança acima de tudo.\r\nKriptoniano de nascimento | Terráqueo por escolha\r\nForça sem compaixão não é heroísmo.\r\n🕊️ Protegendo a humanidade — mesmo quando ela não acredita\r\n#Esperança #HomemDeAço",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$OtR8MkV67Jsjr3DqcN6Ibu$qJAzZfHrO8UeLmvQKbp5TglSB3JSF2q2DgqN6OXJxE8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "📰 Clark Kent 📰",
+    "first_name": "",
+    "last_name": "",
+    "email": "adminuser@adminuser.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-30T02:52:08.821Z",
+    "avatar": "avatars/Clark.avif",
+    "banner": "banners/ClarkBanner.jpg",
+    "bio": "Repórter do Daily Planet | Café demais, manchetes de menos\r\nAcredito que boas histórias podem mudar o mundo\r\nGentileza também é uma forma de força\r\n📸 Sempre no lugar certo… por acaso\r\n#Jornalismo #Verdade #UmPassoAtrás",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.passwordresettoken",
+  "pk": 9,
+  "fields": {
+    "user": 2,
+    "token": "a1d67285-2615-4e44-bfe9-639107c5bf05",
+    "created_at": "2026-01-01T18:07:15.101Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 10,
+  "fields": {
+    "follower": 2,
+    "following": 1,
+    "created_at": "2025-12-27T08:22:20.603Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 17,
+  "fields": {
+    "follower": 4,
+    "following": 1,
+    "created_at": "2025-12-28T03:37:36.299Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 36,
+  "fields": {
+    "follower": 5,
+    "following": 2,
+    "created_at": "2025-12-30T02:53:15.459Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 39,
+  "fields": {
+    "follower": 5,
+    "following": 4,
+    "created_at": "2025-12-30T03:44:50.214Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 40,
+  "fields": {
+    "follower": 5,
+    "following": 1,
+    "created_at": "2025-12-30T03:46:17.692Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 54,
+  "fields": {
+    "follower": 1,
+    "following": 2,
+    "created_at": "2025-12-30T11:11:00.298Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 58,
+  "fields": {
+    "follower": 2,
+    "following": 5,
+    "created_at": "2025-12-30T12:31:13.437Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 59,
+  "fields": {
+    "follower": 3,
+    "following": 1,
+    "created_at": "2025-12-31T02:35:55.583Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 61,
+  "fields": {
+    "follower": 2,
+    "following": 3,
+    "created_at": "2025-12-31T08:02:56.626Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 62,
+  "fields": {
+    "follower": 3,
+    "following": 2,
+    "created_at": "2025-12-31T08:06:47.193Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 63,
+  "fields": {
+    "follower": 5,
+    "following": 3,
+    "created_at": "2025-12-31T08:28:22.096Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 64,
+  "fields": {
+    "follower": 1,
+    "following": 4,
+    "created_at": "2026-01-01T07:22:12.883Z"
+  }
+},
+{
+  "model": "follows.follow",
+  "pk": 65,
+  "fields": {
+    "follower": 1,
+    "following": 3,
+    "created_at": "2026-01-02T04:04:47.678Z"
+  }
+},
+{
+  "model": "comments.comment",
+  "pk": 7,
+  "fields": {
+    "post": 2,
+    "author": 2,
+    "content": "Testando visualização do botão de deletar por outro usuário",
+    "created_at": "2025-12-25T05:21:37.422Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 1,
+  "fields": {
+    "author": 1,
+    "content": "Olá professor!",
+    "created_at": "2025-12-22T06:43:54.247Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 2,
+  "fields": {
+    "author": 2,
+    "content": "Testando com outro usuário",
+    "created_at": "2025-12-22T08:12:35.514Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 3,
+  "fields": {
+    "author": 2,
+    "content": "Testando novamente.",
+    "created_at": "2025-12-23T03:54:53.629Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 4,
+  "fields": {
+    "author": 1,
+    "content": "oi",
+    "created_at": "2025-12-23T04:42:56.571Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 5,
+  "fields": {
+    "author": 1,
+    "content": "oi",
+    "created_at": "2025-12-26T22:49:47.206Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 6,
+  "fields": {
+    "author": 5,
+    "content": "Oi",
+    "created_at": "2025-12-30T02:52:47.620Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 7,
+  "fields": {
+    "author": 3,
+    "content": "oi",
+    "created_at": "2025-12-31T02:37:27.430Z"
+  }
+},
+{
+  "model": "posts.post",
+  "pk": 8,
+  "fields": {
+    "author": 1,
+    "content": "oi",
+    "created_at": "2026-01-02T04:23:20.216Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 4,
+  "fields": {
+    "user": 2,
+    "post": 1,
+    "created_at": "2025-12-23T03:52:55.133Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 5,
+  "fields": {
+    "user": 2,
+    "post": 2,
+    "created_at": "2025-12-23T03:52:57.821Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 41,
+  "fields": {
+    "user": 1,
+    "post": 3,
+    "created_at": "2025-12-27T06:42:00.131Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 46,
+  "fields": {
+    "user": 3,
+    "post": 7,
+    "created_at": "2025-12-31T02:37:34.049Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 47,
+  "fields": {
+    "user": 3,
+    "post": 5,
+    "created_at": "2026-01-01T07:35:03.292Z"
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 48,
+  "fields": {
+    "user": 1,
+    "post": 7,
+    "created_at": "2026-01-02T04:11:57.885Z"
+  }
+}
+]

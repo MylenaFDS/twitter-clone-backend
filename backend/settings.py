@@ -3,9 +3,6 @@ import os
 from datetime import timedelta
 import dj_database_url
 from dotenv import load_dotenv
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 load_dotenv()
 
@@ -13,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -27,17 +24,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    # Third-party
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
 
-    # Cloudinary
-    "cloudinary",
-    "cloudinary_storage",
-
-    # Local apps
     "accounts.apps.AccountsConfig",
     "users",
     "follows",
@@ -78,20 +68,19 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://twitter-clone-static.onrender.com"
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "https://twitter-clone-static.onrender.com",
 ]
 ROOT_URLCONF = "backend.urls"
 
 
 
 DATABASES = {
-    "default": dj_database_url.config(default="postgresql://neondb_owner:npg_js8KSR4yaizk@ep-tiny-cherry-adz6f7uu-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
+
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -115,15 +104,7 @@ SIMPLE_JWT = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
-}
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-DATA_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # 2MB
-FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
-
+# 📂 Media (uploads de avatar/banner)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

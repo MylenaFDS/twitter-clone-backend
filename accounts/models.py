@@ -7,8 +7,6 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 
-from cloudinary.models import CloudinaryField
-
 
 # =========================
 # VALIDADOR DE IMAGEM
@@ -25,15 +23,15 @@ def validate_image(image):
 # USER
 # =========================
 class User(AbstractUser):
-    avatar = CloudinaryField(
-        "avatar",
+    avatar = models.ImageField(
+        upload_to="avatars/",
         blank=True,
         null=True,
         validators=[validate_image],
     )
 
-    banner = CloudinaryField(
-        "banner",
+    banner = models.ImageField(
+        upload_to="banners/",
         blank=True,
         null=True,
         validators=[validate_image],
