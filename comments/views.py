@@ -8,12 +8,11 @@ class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_permissions(self):
-     if self.action in ["list", "retrieve"]:
-        return []
-     if self.action == "create":
-        return [IsAuthenticated()]
-     return [IsAuthenticated(), IsAuthor()]
-
+        if self.action in ["list", "retrieve"]:
+            return []
+        if self.action == "create":
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), IsAuthor()]
     def get_queryset(self):
         queryset = Comment.objects.select_related("author")
 
