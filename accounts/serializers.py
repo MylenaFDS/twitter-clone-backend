@@ -27,8 +27,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 # USER ME
 # =========================
 class UserMeSerializer(serializers.ModelSerializer):
-    avatar_url = serializers.SerializerMethodField()
-    banner_url = serializers.SerializerMethodField()
+    # 🔹 campos REAIS (write)
+    avatar = serializers.ImageField(required=False, allow_null=True)
+    banner = serializers.ImageField(required=False, allow_null=True)
+
+    # 🔹 campos de leitura (Cloudinary URL)
+    avatar_url = serializers.SerializerMethodField(read_only=True)
+    banner_url = serializers.SerializerMethodField(read_only=True)
 
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
@@ -41,13 +46,27 @@ class UserMeSerializer(serializers.ModelSerializer):
             "username",
             "email",
             "bio",
+
+            # 👇 IMPORTANTÍSSIMO
+            "avatar",
+            "banner",
+
             "avatar_url",
             "banner_url",
+
             "followers_count",
             "following_count",
             "is_following",
         ]
-        read_only_fields = ["id", "email"]
+        read_only_fields = [
+            "id",
+            "email",
+            "followers_count",
+            "following_count",
+            "is_following",
+            "avatar_url",
+            "banner_url",
+        ]
 
     # 🔢 contadores
     def get_followers_count(self, obj):
